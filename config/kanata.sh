@@ -37,8 +37,8 @@ fi
 
 if [[ "$EUID" -ne 0 ]]; then
     printf '%s\n' "Installer Description: kanata setup and config (systemd) system level"
-    printf '%s\n' "By ENDcChill; Under MIT License; Repository https://github.com/endchill/install.endchill.xyz"
-    printf '%s\n' "Installer needs root permissions always read script code before running it"
+    printf '%s\n' "By ENDChill; Under MIT License; Repository https://github.com/endchill/install.endchill.xyz"
+    printf '%s\n' "Installer needs root permissions, always read script code before running it"
     exec sudo "$0" "${CLICOLOR_FORCE:-}" "${CLICOLOR:-}" "$@"
 fi
 
@@ -173,7 +173,7 @@ _main() {
     kanata_binary_path="$(command -v kanata)"
 
     [[ ! -d "$config_dirpath" ]] && mkdir -p "$config_dirpath"
-    _print_log "info" "Created ${BOLD}$config_dirpath${RESET}"
+    _print_log "info" "Created directory at ${BOLD}$config_dirpath${RESET}"
 
     modprobe uinput
     _print_log "info" "Enabled uinput kernel module"

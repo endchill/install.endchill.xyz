@@ -4,15 +4,43 @@
 # SPDX-FileCopyrightText: 2026 ENDChill
 
 PS4='${BASH_SOURCE[0]##*/}: $?: $LINENO: '
-BUILTINS=("env")
 
 set -eu
-enable "${BUILTINS[@]}" 2>/dev/null || :
+
+
+if [ "${CLICOLOR_FORCE:-$_CLICOLOR_FORCE}" = 1 ] || { [ "${CLICOLOR:-$_CLICOLOR}" = 1 ] && [ -t 1 ]; }; then
+    RESET="$(printf '\033[0m')"
+    BOLD="$(printf '\033[1m')"
+    RED="$(printf '\033[31m')"
+    # GREEN="$(printf '\033[32m')"
+    YELLOW="$(printf '\033[33m')"
+    BLUE="$(printf '\033[34m')"
+    MAGENTA="$(printf '\033[35m')"
+    CYAN="$(printf '\033[36m')"
+    # GRAY="$(printf '\033[37m')"
+else
+    RESET=""
+    BOLD=""
+    RED=""
+    GREEN=""
+    YELLOW=""
+    BLUE=""
+    # MAGENTA=""
+    CYAN=""
+    # GRAY=""
+fi
+
+
+if [[ "$EUID" -ne 0 ]]; then
+    printf '%s\n' "${BOLD}Installer Description:${RESET} kanata setup and config script (systemd system-level)"
+    printf '%s\n' "By ${YELLOW}ENDChill${RESET}; Under ${CYAN}MIT License${RESET}; Repository at ${BOLD}https://github.com/endchill/install.endchill.xyz${RESET}"
+    printf '%s\n' "Installer needs ${RED}root permissions${RESET}, ${MAGENTA}always${RESET} read script code before running it"
+    exec sudo bash -s -- "${CLICOLOR:-}" "${CLICOLOR_FORCE:-}" "$@"
+fi
 
 
 _CLICOLOR_FORCE="${1:-}"
 _CLICOLOR="${2:-}"
-
 
 if [ "${CLICOLOR_FORCE:-$_CLICOLOR_FORCE}" = 1 ] || { [ "${CLICOLOR:-$_CLICOLOR}" = 1 ] && [ -t 1 ]; }; then
     RESET="$(printf '\033[0m')"
@@ -34,14 +62,6 @@ else
     # MAGENTA=""
     # CYAN=""
     # GRAY=""
-fi
-
-
-if [[ "$EUID" -ne 0 ]]; then
-    printf '%s\n' "Installer Description: kanata setup and config (systemd) system level"
-    printf '%s\n' "By ENDChill; Under MIT License; Repository https://github.com/endchill/install.endchill.xyz"
-    printf '%s\n' "Installer needs root permissions, always read script code before running it"
-    exec sudo env CLICOLOR_FORCE="${CLICOLOR_FORCE:-}" CLICOLOR="${CLICOLOR:-}" bash -s -- "$@"
 fi
 
 

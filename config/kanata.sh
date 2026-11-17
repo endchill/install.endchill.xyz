@@ -4,8 +4,10 @@
 # SPDX-FileCopyrightText: 2026 ENDChill
 
 PS4='${BASH_SOURCE[0]##*/}: $?: $LINENO: '
+BUILTINS=("env")
 
 set -eu
+enable "${BUILTINS[@]}" 2>/dev/null || :
 
 
 _CLICOLOR_FORCE="${1:-}"
@@ -39,7 +41,7 @@ if [[ "$EUID" -ne 0 ]]; then
     printf '%s\n' "Installer Description: kanata setup and config (systemd) system level"
     printf '%s\n' "By ENDChill; Under MIT License; Repository https://github.com/endchill/install.endchill.xyz"
     printf '%s\n' "Installer needs root permissions, always read script code before running it"
-    exec sudo "$0" "${CLICOLOR_FORCE:-}" "${CLICOLOR:-}" "$@"
+    exec sudo env CLICOLOR_FORCE="${CLICOLOR_FORCE:-}" CLICOLOR="${CLICOLOR:-}" bash -s -- "$@"
 fi
 
 
